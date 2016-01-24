@@ -3,9 +3,9 @@
     <property name="pattern" value="%d{HH:mm:ss.SSS} %-5level %logger{0} - %msg%n"/>
 
     <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${log.root}/vap-admin.log</file>
+        <file>${log.root}/JaveWebConfiguration.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${log.root}/vap-admin.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <fileNamePattern>${log.root}/JaveWebConfiguration.log.%d{yyyy-MM-dd}</fileNamePattern>
             <maxHistory>7</maxHistory>
         </rollingPolicy>
         <encoder>
@@ -24,12 +24,23 @@
         </encoder>
     </appender>
 
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoder的默认实现类是ch.qos.logback.classic.encoder.PatternLayoutEncoder -->
+        <encoder>
+            <pattern>%d{yyyy/MM/dd-HH:mm:ss} %level [%thread] %caller{1} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
     <logger name="jmonitor" level="INFO" additivity="false">
         <appender-ref ref="jmonitor"/>
     </logger>
 
     <root level="${log.level}">
         <appender-ref ref="file"/>
+    </root>
+
+    <root level="ERROR">
+        <appender-ref ref="STDOUT" />
     </root>
 
 
