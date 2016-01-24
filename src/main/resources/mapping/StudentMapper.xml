@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.zafu.dao.StudentDAO">
+
+    <resultMap id="result" type="cn.edu.zafu.model.Student">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="age" property="age" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="columns">
+        id,name,age
+    </sql>
+
+    <select id="countAll" parameterType="map" resultType="int">
+        SELECT count(1) FROM student
+    </select>
+
+    <select id="findByKey" parameterType="map" resultMap="result">
+        SELECT
+        <include refid="columns"/>
+        FROM student
+        WHERE  name=#{name} AND age=#{age}
+    </select>
+
+    <select id="findById" parameterType="int" resultMap="result">
+        SELECT
+        <include refid="columns"/>
+        FROM student
+        WHERE id=#{id}
+    </select>
+
+    <insert id="insert" parameterType="cn.edu.zafu.model.Student" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO student
+        (name,age)
+        VALUES
+        (#{name},#{age})
+    </insert>
+
+    <update id="update" parameterType="cn.edu.zafu.model.Student">
+        update student
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="age != null">
+                age = #{age},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <sql id="pageCondition">
+        <where>
+            <if test="age != null">
+                age = #{age}
+            </if>
+            <if test="name != null">
+                AND name LIKE CONCAT('%','${name}','%')
+            </if>
+        </where>
+    </sql>
+
+    <select id="pagination" parameterType="map" resultMap="result">
+        SELECT
+        <include refid="columns"/>
+        FROM student
+        <include refid="pageCondition"/>
+        ORDER BY age DESC
+        limit #{offset},#{rows}
+    </select>
+
+    <select id="count" parameterType="map" resultType="int">
+        SELECT
+        count(1)
+        FROM student
+        <include refid="pageCondition"/>
+    </select>
+
+
+</mapper>
