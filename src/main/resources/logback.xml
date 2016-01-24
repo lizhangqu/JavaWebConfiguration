@@ -1,0 +1,36 @@
+<configuration>
+
+    <property name="pattern" value="%d{HH:mm:ss.SSS} %-5level %logger{0} - %msg%n"/>
+
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.root}/vap-admin.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.root}/vap-admin.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="jmonitor" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.root}/jmonitor.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.root}/jmonitor.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="jmonitor" level="INFO" additivity="false">
+        <appender-ref ref="jmonitor"/>
+    </logger>
+
+    <root level="${log.level}">
+        <appender-ref ref="file"/>
+    </root>
+
+
+</configuration>
