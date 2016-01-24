@@ -12,10 +12,19 @@
     http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <aop:aspectj-autoproxy proxy-target-class="true"/>
+
+
+    <!--指明 controller 所在包，并扫描其中的注解-->
+    <context:component-scan base-package="cn.edu.zafu.controller"/>
+
+    <!-- 静态资源(js、image等)的访问 -->
     <mvc:default-servlet-handler/>
 
+    <!-- 开启注解 -->
+    <mvc:annotation-driven/>
 
-    <!--    <mvc:interceptors>
+    <!--拦截器-->
+    <!-- <mvc:interceptors>
 
         </mvc:interceptors>-->
 
@@ -46,8 +55,6 @@
         <property name="exposeRequestAttributes" value="false"/>
         <property name="exposeSessionAttributes" value="true"/>
     </bean>
-
-    <context:component-scan base-package="cn.edu.zafu.controller"/>
 
 </beans>
 
